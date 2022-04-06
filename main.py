@@ -3,7 +3,7 @@ from better_profanity import profanity
 import time
 
 start_time = time.time()
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static/css")
 profanity.load_censor_words()
 
 @app.route('/')

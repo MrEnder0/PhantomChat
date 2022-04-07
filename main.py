@@ -59,6 +59,12 @@ def chat_post(chatid):
             chatfile = open(f'chats/{chatid}.txt', 'a')
             chatfile.write("<p>"+'Command: Uptime in mins '+str(round(time.time()-start_time)/60)+"</p>"+'\n')
             chatfile.close()
+        if answer.startswith('image'):
+            answer = answer[6:]
+            chatfile.close()
+            chatfile = open(f'chats/{chatid}.txt', 'a')
+            chatfile.write("<img src='"+answer+"' style='width:300px;height:250px'>"+'\n<p></p>\n')
+            chatfile.close()
     else:
         chatfile = open(f'chats/{chatid}.txt', 'a')
         chatfile.write("<p>"+answer+"</p>"+'\n')

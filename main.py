@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, url_for
 from better_profanity import profanity
 import time
 
@@ -8,7 +8,7 @@ profanity.load_censor_words()
 
 @app.route('/')
 def main_page():
-    return '<h1>Welcome to Phantom Chat!</h1>' + '\n' + render_template('button.html')
+    return render_template('home.html')
 
 @app.route('/chat')
 def chat_page():
@@ -64,9 +64,7 @@ def chat_post(chatid):
         chatfile.write("<p>"+answer+"</p>"+'\n')
         chatfile.close()
 
-    chatfile = open(f'chats/{chatid}.txt', 'r')
-    chat = chatfile.read()
-    return 'Enter secret message:\n' + render_template('text.html') + chat
+    return redirect(f'/chat/{chatid}')
 
 @app.errorhandler(404)
 def page_not_found(error):

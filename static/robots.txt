@@ -1,0 +1,5 @@
+# Block Bot
+<p></p>
+User-agent: *
+<p></p>
+Disallow: /

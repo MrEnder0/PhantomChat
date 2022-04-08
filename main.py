@@ -31,7 +31,7 @@ def chat(chatid):
     try:
         chatfile = open(f'chats/{chatid}.txt', 'r')
         chat = chatfile.read()
-        return 'Enter secret message:\n' + render_template('text.html')  + chat
+        return render_template('chatroom.html')  + chat
     except:
         return render_template('404.html')
 

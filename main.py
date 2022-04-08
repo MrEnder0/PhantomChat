@@ -12,7 +12,7 @@ def main_page():
 
 @app.route('/chat')
 def chat_page():
-    return 'Enter chat name:\n' + render_template('text.html')
+    return render_template('chat.html')
 
 @app.route('/chat', methods=['POST'])
 def chat_page_post():

@@ -72,6 +72,11 @@ def chat_post(chatid):
 
     return redirect(f'/chat/{chatid}')
 
+@app.route('/robots.txt')
+def robots():
+    robots_txt = open('static/robots.txt', 'r')
+    return robots_txt.read()
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html'), 404

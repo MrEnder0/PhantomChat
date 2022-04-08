@@ -10,24 +10,28 @@ body {
 h1 {
     color: black;
     font-family: Plastic;
-    font-weight: 650;
-    /*text-align: center;*/
+    font-weight: 600;
+    font-size: 60px;
+    text-align: center;
 }
 
 .button {
     background-color: black;
     border: none;
     color: white;
-    padding: 16px 32px;
+    padding: 24px 48px;
     text-align: center;
-    font-size: 16px;
+    font-size: 24px;
     margin: 4px 2px;
     opacity: 0.6;
-    transition: 0.2s;
+    transition: 0.25s;
     display: inline-block;
     text-decoration: none;
     cursor: pointer;
     border-radius: 15px;
+    width: 18%;
+    margin-left: 41%;
+    margin-right: 41%;
 }
   
 .button:hover {opacity: 0.85}

@@ -39,17 +39,20 @@ def chat(chatid):
 def chat_post(chatid):
     answer = request.form['text']
     answer = profanity.censor(answer)
+    answer = answer.replace('\n', '<br>')
+    answer = answer.replace('<script>', '')
+    answer = answer.replace('</script>', '')
     
     if answer.startswith('!'):
         chatfile = open(f'chats/{chatid}.txt', 'a')
         answer = answer[1:]
         if answer == 'credit':
-            chatfile.write("<p>"+"Command: All code is written by MrEnder0001"+"</p>"+'\n')
+            chatfile.write("Command: All code is written by MrEnder0001"+"<br>\n")
             chatfile.close()
         if answer == 'clearchat':
             chatfile.close()
             chatfile = open(f'chats/{chatid}.txt', 'w')
-            chatfile.write("<p>"+'Command: Chat has been cleared.'+"</p>"+'\n')
+            chatfile.write('Command: Chat has been cleared.'+"<br>\n")
             chatfile.close()
         if answer == 'exit':
             chatfile.close()
@@ -57,17 +60,17 @@ def chat_post(chatid):
         if answer == 'uptime':
             chatfile.close()
             chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write("<p>"+'Command: Uptime in mins '+str(round(time.time()-start_time)/60)+"</p>"+'\n')
+            chatfile.write('Command: Uptime in mins '+str(round(time.time()-start_time)/60)+"<br>\n")
             chatfile.close()
         if answer.startswith('image'):
             answer = answer[6:]
             chatfile.close()
             chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write("<img src='"+answer+"' style='width:300px;height:250px'>"+'\n<p></p>\n')
+            chatfile.write("<img src='"+answer+"' style='width:300px;height:250px'>"+"<br>\n")
             chatfile.close()
     else:
         chatfile = open(f'chats/{chatid}.txt', 'a')
-        chatfile.write("<p>"+answer+"</p>"+'\n')
+        chatfile.write(answer+"<br>\n")
         chatfile.close()
 
     return redirect(f'/chat/{chatid}')

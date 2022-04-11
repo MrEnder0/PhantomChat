@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, redirect
 from better_profanity import profanity
-import time
+import time, os
 
 start_time = time.time()
 app = Flask(__name__, static_folder="static/css")
@@ -46,17 +46,20 @@ def chat_post(chatid):
     if answer.startswith('!'):
         chatfile = open(f'chats/{chatid}.txt', 'a')
         answer = answer[1:]
-        if answer == 'credit':
-            chatfile.write("Command: All code is written by MrEnder0001"+"<br>\n")
-            chatfile.close()
+
         if answer == 'clearchat':
             chatfile.close()
             chatfile = open(f'chats/{chatid}.txt', 'w')
-            chatfile.write('Command: Chat has been cleared.'+"<br>\n")
+            chatfile.write('Command: Chat has been cleared.<br>\n')
             chatfile.close()
-        if answer == 'exit':
-            chatfile.close()
-            return redirect('/')
+
+        if answer == 'delchat':
+            if chatid != "main":
+                chatfile.close()
+                os.remove(f'chats/{chatid}.txt')
+                return redirect('/')
+            else:
+                pass
         if answer == 'uptime':
             chatfile.close()
             chatfile = open(f'chats/{chatid}.txt', 'a')
@@ -68,6 +71,12 @@ def chat_post(chatid):
             chatfile = open(f'chats/{chatid}.txt', 'a')
             chatfile.write("<img src='"+answer+"' style='width:300px;height:250px'>"+"<br>\n")
             chatfile.close()
+        if answer == 'credit':
+            chatfile.write("Command: All code is written by MrEnder0001<br>\n")
+            chatfile.close()
+        if answer == 'exit':
+            chatfile.close()
+            return redirect('/')
     else:
         chatfile = open(f'chats/{chatid}.txt', 'a')
         chatfile.write(answer+"<br>\n")

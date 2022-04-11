@@ -1,8 +1,10 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, send_file
 from better_profanity import profanity
-import time, os
+from captcha.image import ImageCaptcha
+import random, string, time, os
 
 start_time = time.time()
+letters = string.ascii_lowercase
 app = Flask(__name__, static_folder="static/css")
 profanity.load_censor_words()
 
@@ -84,6 +86,14 @@ def chat_post(chatid):
 
     return redirect(f'/chat/{chatid}')
 
+@app.route('/captcha')
+def captcha():
+    image = ImageCaptcha(width = 280, height = 90)
+    captcha_text = ''.join(random.choice(letters) for i in range(5))
+    image.write(captcha_text, 'CAPTCHA.png')
+    return send_file("CAPTCHA.png", mimetype='image/gif')
+
+
 @app.route('/robots.txt')
 def robots():
     robots_txt = open('static/robots.txt', 'r')
@@ -97,5 +107,6 @@ def page_not_found(error):
 def page_not_found(error):
     return render_template('500.html'), 500
 
+
 if __name__ == '__main__':
-    app.run(host= '0.0.0.0', port=80, debug=False)
+    app.run(host='0.0.0.0', port=80, debug=True)

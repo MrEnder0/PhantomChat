@@ -1,5 +1,5 @@
 # Block Bot
-<p></p>
+<br>
 User-agent: *
-<p></p>
-Disallow: /
+<br>
+Disallow: /chat

@@ -2,6 +2,10 @@
     font-family: Plastic;
     src: url("Plastic.ttf");
 }
+@font-face {
+    font-family: KoHo;
+    src: url("KoHo.ttf");
+}
 
 body {
     background-color: #f1e3b1;
@@ -9,7 +13,7 @@ body {
 
 h1 {
     color: black;
-    font-family: Plastic;
+    font-family: KoHo;
     font-weight: 600;
     font-size: 60px;
     text-align: center;

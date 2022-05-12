@@ -1,0 +1,59 @@
+@font-face {
+    font-family: Plastic;
+    src: url("Plastic.ttf");
+}
+@font-face {
+    font-family: KoHo;
+    src: url("KoHo.ttf");
+}
+
+body {
+    background-color: #f1e3b1;
+}
+
+h1 {
+    color: black;
+    font-family: KoHo;
+    font-weight: 600;
+    font-size: 45px;
+    text-align: center;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+input[type=text] {
+    background-color: black;
+    color: white;
+    opacity: 0.75;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    width: 18%;
+    border-radius: 15px;
+    margin-left: 41%;
+    margin-right: 41%;
+    text-align: center;
+    font-size: 24px;
+}
+
+@media only screen and (max-width: 1250px) {
+    h1 {
+        font-weight: 600;
+        font-size: 70px;
+    }
+
+    input[type=text] {
+        padding: 48px 96px;
+        font-size: 48px;
+        margin: 4px 10px;
+        border-radius: 25px;
+        width: 60%;
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+}

@@ -1,1 +1,2 @@
 Welcome to Phantom Chat<br>
+Try commands like !clearchat !delchat !uptime !image {image url} !credit or !exit

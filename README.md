@@ -3,7 +3,7 @@ A secret messaging web app written in Flask.
 
 # Plans
 
-*make users have to do capta time to time
+*make users have to do capta time to time (working on)
 
 *add css to the chats
 

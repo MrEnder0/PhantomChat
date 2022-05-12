@@ -19,7 +19,7 @@ h1 {
     text-align: center;
 }
 
-.center {
+.captcha_img {
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -45,6 +45,10 @@ input[type=text] {
     h1 {
         font-weight: 600;
         font-size: 70px;
+    }
+
+    .captcha_img {
+        width: 75%;
     }
 
     input[type=text] {

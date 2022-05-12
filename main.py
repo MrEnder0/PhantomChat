@@ -9,9 +9,10 @@ letters = string.ascii_lowercase
 app = Flask(__name__, static_folder="static/css")
 
 def generate_captcha():
+    global captcha_text
     image = ImageCaptcha(width = 280, height = 90)
     captcha_text = ''.join(random.choice(letters) for i in range(5))
-    image.write(captcha_text, 'templates/CAPTCHA.png')
+    image.write(captcha_text, 'static/css/CAPTCHA.png')
 
 @app.route('/')
 def main_page():
@@ -38,7 +39,7 @@ def chat(chatid):
     userip = request.remote_addr
     captchaRequire = open('captcha_require.txt', 'r')
 
-    if not userip in captchaRequire.readlines():
+    if not userip in captchaRequire.read():
         try:
             chatfile = open(f'chats/{chatid}.txt', 'r')
             chat = chatfile.read()
@@ -51,57 +52,76 @@ def chat(chatid):
 
 @app.route('/chat/<chatid>', methods=['POST'])
 def chat_post(chatid):
-    answer = request.form['text']
-    answer = profanity.censor(answer)
-    answer = answer.replace('\n', '<br>')
-    answer = answer.replace('<script>', '')
-    answer = answer.replace('</script>', '')
+    userip = request.remote_addr
+    captchaRequire = open('captcha_require.txt', 'r')
+
+    if not userip in captchaRequire.read():
+        chatroom_message = request.form['text']
+        chatroom_message = profanity.censor(chatroom_message)
+        chatroom_message = chatroom_message.replace('\n', '<br>')
+        chatroom_message = chatroom_message.replace('<script>', '')
+        chatroom_message = chatroom_message.replace('</script>', '')
     
-    if answer.startswith('!'):
-        chatfile = open(f'chats/{chatid}.txt', 'a')
-        answer = answer[1:]
+        if chatroom_message.startswith('!'):
+            chatfile = open(f'chats/{chatid}.txt', 'a')
+            chatroom_message = chatroom_message[1:]
 
-        if answer == 'clearchat':
-            chatfile.close()
-            chatfile = open(f'chats/{chatid}.txt', 'w')
-            chatfile.write('Command: Chat has been cleared.<br>\n')
-            chatfile.close()
-
-        if answer == 'delchat':
-            if chatid != "main":
+            if chatroom_message == 'clearchat':
                 chatfile.close()
-                os.remove(f'chats/{chatid}.txt')
+                chatfile = open(f'chats/{chatid}.txt', 'w')
+                chatfile.write('Command: Chat has been cleared.<br>\n')
+                chatfile.close()
+
+            if chatroom_message == 'delchat':
+                if chatid != "main":
+                    chatfile.close()
+                    os.remove(f'chats/{chatid}.txt')
+                    return redirect('/')
+                else:
+                    pass
+
+            if chatroom_message == 'uptime':
+                chatfile.close()
+                chatfile = open(f'chats/{chatid}.txt', 'a')
+                chatfile.write('Command: Uptime in mins '+str(round(time.time()-start_time)/60)+"<br>\n")
+                chatfile.close()
+
+            if chatroom_message.startswith('image'):
+                chatroom_message = chatroom_message[6:]
+                chatfile.close()
+                chatfile = open(f'chats/{chatid}.txt', 'a')
+                chatfile.write("<img src='"+chatroom_message+"' style='width:300px;height:250px'>"+"<br>\n")
+                chatfile.close()
+
+            if chatroom_message == 'credit':
+                chatfile.write("Command: All code is written by MrEnder0001<br>\n")
+                chatfile.close()
+            
+            if chatroom_message == 'exit':
+                chatfile.close()
                 return redirect('/')
-            else:
-                pass
-        if answer == 'uptime':
-            chatfile.close()
+        else:
             chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write('Command: Uptime in mins '+str(round(time.time()-start_time)/60)+"<br>\n")
+            chatfile.write(chatroom_message+"<br>\n")
             chatfile.close()
-        if answer.startswith('image'):
-            answer = answer[6:]
-            chatfile.close()
-            chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write("<img src='"+answer+"' style='width:300px;height:250px'>"+"<br>\n")
-            chatfile.close()
-        if answer == 'credit':
-            chatfile.write("Command: All code is written by MrEnder0001<br>\n")
-            chatfile.close()
-        if answer == 'exit':
-            chatfile.close()
-            return redirect('/')
     else:
-        chatfile = open(f'chats/{chatid}.txt', 'a')
-        chatfile.write(answer+"<br>\n")
-        chatfile.close()
+        captcha_answer = request.form['captcha']
+        if captcha_answer == captcha_text:
+            captchaRequire = open('captcha_require.txt', 'r')
+            required_captcha = captchaRequire.read()
+            captchaRequire.close()
+            captchaRequire = open('captcha_require.txt', 'w')
+            captchaRequire.write(required_captcha.replace(userip+"|", ''))
+            captchaRequire.close()
+        else:
+            return redirect(f'/chat/{chatid}')
 
     return redirect(f'/chat/{chatid}')
 
 @app.route('/captcha')
 def captcha():
     generate_captcha()
-    return send_file("templates/CAPTCHA.png", mimetype='image/gif')
+    return send_file("static/css/CAPTCHA.png", mimetype='image/gif')
 
 @app.route('/robots.txt')
 def robots():

@@ -5,7 +5,7 @@ A secret messaging web app written in Flask.
 
 *make users have to do capta time to time (working on)
 
-*fix security isues
+*fix security issues
 
 *add css to the chats
 

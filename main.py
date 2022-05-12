@@ -100,10 +100,18 @@ def chat_post(chatid):
             if chatroom_message == 'exit':
                 chatfile.close()
                 return redirect('/')
+            if random.randint(0,100) < 20:
+                captchaRequire = open('captcha_require.txt', 'a')
+                captchaRequire.write(userip+'|')
+                captchaRequire.close()
         else:
             chatfile = open(f'chats/{chatid}.txt', 'a')
             chatfile.write(chatroom_message+"<br>\n")
             chatfile.close()
+            if random.randint(0,100) < 20:
+                captchaRequire = open('captcha_require.txt', 'a')
+                captchaRequire.write(userip+'|')
+                captchaRequire.close()
     else:
         captcha_answer = request.form['captcha']
         if captcha_answer == captcha_text:

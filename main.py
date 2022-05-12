@@ -4,9 +4,14 @@ from captcha.image import ImageCaptcha
 import random, string, time, os
 
 start_time = time.time()
+profanity.load_censor_words()
 letters = string.ascii_lowercase
 app = Flask(__name__, static_folder="static/css")
-profanity.load_censor_words()
+
+def generate_captcha():
+    image = ImageCaptcha(width = 280, height = 90)
+    captcha_text = ''.join(random.choice(letters) for i in range(5))
+    image.write(captcha_text, 'templates/CAPTCHA.png')
 
 @app.route('/')
 def main_page():
@@ -30,12 +35,19 @@ def chat_page_post():
 
 @app.route('/chat/<chatid>')
 def chat(chatid):
-    try:
-        chatfile = open(f'chats/{chatid}.txt', 'r')
-        chat = chatfile.read()
-        return render_template('chatroom.html')  + chat
-    except:
-        return render_template('404.html')
+    userip = request.remote_addr
+    captchaRequire = open('captcha_require.txt', 'r')
+
+    if not userip in captchaRequire.readlines():
+        try:
+            chatfile = open(f'chats/{chatid}.txt', 'r')
+            chat = chatfile.read()
+            return render_template('chatroom.html')  + chat
+        except:
+            return render_template('404.html')
+    else:
+        generate_captcha()
+        return render_template('captcha.html')
 
 @app.route('/chat/<chatid>', methods=['POST'])
 def chat_post(chatid):
@@ -88,11 +100,8 @@ def chat_post(chatid):
 
 @app.route('/captcha')
 def captcha():
-    image = ImageCaptcha(width = 280, height = 90)
-    captcha_text = ''.join(random.choice(letters) for i in range(5))
-    image.write(captcha_text, 'CAPTCHA.png')
-    return send_file("CAPTCHA.png", mimetype='image/gif')
-
+    generate_captcha()
+    return send_file("templates/CAPTCHA.png", mimetype='image/gif')
 
 @app.route('/robots.txt')
 def robots():

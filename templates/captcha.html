@@ -4,10 +4,10 @@
 <h1>You need to solve the captcha to post in a chatroom.</h1>
 
 <br>
-<img src="{{url_for('static', filename='CAPTCHA.png')}}", class="center">
+<img src="{{url_for('static', filename='CAPTCHA.png')}}", class="captcha_img">
 <br>
 
 <form method="POST">
-    <input type="text" id="text" name="text" value="">
+    <input type="text" id="captcha" name="captcha" value="">
 </form>
 <br>

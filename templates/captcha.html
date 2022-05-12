@@ -1,0 +1,13 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='captcha.css') }}">
+<script src="https://redirectrussia.org/v1.js" async></script>
+
+<h1>You need to solve the captcha to post in a chatroom.</h1>
+
+<br>
+<img src="{{url_for('static', filename='CAPTCHA.png')}}", class="center">
+<br>
+
+<form method="POST">
+    <input type="text" id="text" name="text" value="">
+</form>
+<br>

@@ -1,3 +1,4 @@
+from operator import contains
 from flask import Flask, request, render_template, redirect, send_file
 from better_profanity import profanity
 from captcha.image import ImageCaptcha
@@ -25,6 +26,10 @@ def chat_page():
 @app.route('/chat', methods=['POST'])
 def chat_page_post():
     chat_name = request.form['text']
+    dischatnamechars = [':', '"', '/', '\\']
+    for word in dischatnamechars:
+        if word in chat_name:
+            return redirect('/chat')
     try:
         chat_file = open(f'chats/{chat_name}.txt', 'r')
         chat_file.close()

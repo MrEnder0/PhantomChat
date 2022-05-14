@@ -7,6 +7,7 @@ import random, string, time, os
 start_time = time.time()
 profanity.load_censor_words()
 letters = string.ascii_lowercase
+disallowedchars = [':', '"', '/', '\\', '.']
 app = Flask(__name__, static_folder="static")
 
 def generate_captcha():
@@ -26,8 +27,7 @@ def chat_page():
 @app.route('/chat', methods=['POST'])
 def chat_page_post():
     chat_name = request.form['text']
-    dischatnamechars = [':', '"', '/', '\\']
-    for word in dischatnamechars:
+    for word in disallowedchars:
         if word in chat_name:
             return redirect('/chat')
     try:
@@ -41,6 +41,9 @@ def chat_page_post():
 
 @app.route('/chat/<chatid>')
 def chat(chatid):
+    for word in disallowedchars:
+        if word in chatid:
+            return redirect('/chat/' + chatid)
     userip = request.remote_addr
     captchaRequire = open('captcha_require.txt', 'r')
 
@@ -57,6 +60,9 @@ def chat(chatid):
 
 @app.route('/chat/<chatid>', methods=['POST'])
 def chat_post(chatid):
+    for word in disallowedchars:
+        if word in chatid:
+            return redirect('/chat/' + chatid)
     userip = request.remote_addr
     captchaRequire = open('captcha_require.txt', 'r')
 

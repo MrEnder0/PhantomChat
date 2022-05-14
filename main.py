@@ -1,4 +1,3 @@
-from operator import contains
 from flask import Flask, request, render_template, redirect, send_file
 from better_profanity import profanity
 from captcha.image import ImageCaptcha

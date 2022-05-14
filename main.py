@@ -6,13 +6,13 @@ import random, string, time, os
 start_time = time.time()
 profanity.load_censor_words()
 letters = string.ascii_lowercase
-app = Flask(__name__, static_folder="static/css")
+app = Flask(__name__, static_folder="static")
 
 def generate_captcha():
     global captcha_text
     image = ImageCaptcha(width = 280, height = 90)
     captcha_text = ''.join(random.choice(letters) for i in range(5))
-    image.write(captcha_text, 'static/css/CAPTCHA.png')
+    image.write(captcha_text, 'static/CAPTCHA.png')
 
 @app.route('/')
 def main_page():

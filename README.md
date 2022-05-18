@@ -3,8 +3,8 @@ A secret messaging web app written in Flask.
 
 # Plans
 
-*fix security issues
+*fix security issues (working on)
 
 *add css to the chats
 
-*special chats where only certain ip can talk
+*a command plugin system

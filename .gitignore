@@ -1,3 +1,6 @@
-# Ignore all text files
+# Ignore all non code
 
 *.txt
+*.md
+*.ttf
+*.ico

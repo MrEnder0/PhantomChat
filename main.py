@@ -15,6 +15,18 @@ def generate_captcha():
     captcha_text = ''.join(random.choice(letters) for i in range(5))
     image.write(captcha_text, 'static/CAPTCHA.png')
 
+def asign_username(ip, username):
+    usernamefile = open('usernames.txt', 'a')
+    if "|" or "=" in username:
+        username = username.replace("|", "")
+        username = username.replace("=", "")
+
+    if username == '':
+        NewUsername = "Ghost " + ''.join(random.choices(string.digits, k=6))
+        usernamefile.write(f'{ip}={NewUsername}|')
+    else:
+        usernamefile.write(f'{ip}={username}|')
+
 @app.route('/')
 def main_page():
     return render_template('home.html')
@@ -43,15 +55,21 @@ def chat(chatid):
     for word in disallowedchars:
         if word in chatid:
             return redirect('/chat/' + chatid)
+
     userip = request.remote_addr
     captchaRequire = open('captcha_require.txt', 'r')
+    usernamefile = open('usernames.txt', 'r')
 
     if not userip in captchaRequire.read():
         try:
             chatfile = open(f'chats/{chatid}.txt', 'r')
             chat = chatfile.read()
+            if not userip in usernamefile.read():
+                asign_username(userip, '')
             return render_template('chatroom.html')  + chat
         except:
+            if not userip in usernamefile.read():
+                asign_username(userip, '')
             return render_template('404.html')
     else:
         generate_captcha()

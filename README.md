@@ -1,5 +1,5 @@
 # PhantomChat
-A secret messaging web app written in Flask.
+A messaging web app written in Flask.
 
 # Plans
 

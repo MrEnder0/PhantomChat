@@ -28,6 +28,13 @@ def asign_username(ip, username):
     else:
         nicknamesfile.write(f'{ip}={username}|')
 
+def get_username(ip):
+    nicknamesfile = open('nicknames.txt', 'r')
+    nicknames = nicknamesfile.read().split('|')
+    for nickname in nicknames:
+        if nickname.startswith(ip):
+            return nickname.split('=')[1]
+
 @app.route('/')
 def main_page():
     return render_template('home.html')
@@ -129,15 +136,15 @@ def chat_post(chatid):
             if chatroom_message == 'exit':
                 chatfile.close()
                 return redirect('/')
-            if random.randint(0,100) < 20:
+            if random.randint(0,10) < 2:
                 captchaRequire = open('captcha_require.txt', 'a')
                 captchaRequire.write(userip+'|')
                 captchaRequire.close()
         else:
             chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write(chatroom_message+"<br>\n")
+            chatfile.write(f'[{get_username(userip)}]: {chatroom_message}<br>\n')
             chatfile.close()
-            if random.randint(0,100) < 20:
+            if random.randint(0,10) < 2:
                 captchaRequire = open('captcha_require.txt', 'a')
                 captchaRequire.write(userip+'|')
                 captchaRequire.close()

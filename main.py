@@ -59,17 +59,17 @@ def chat(chatid):
 
     userip = request.remote_addr
     captchaRequire = open('captcha_require.txt', 'r')
-    usernamefile = open('usernames.txt', 'r')
+    nicknamefile = open('nicknames.txt', 'r')
 
     if not userip in captchaRequire.read():
         try:
             chatfile = open(f'chats/{chatid}.txt', 'r')
             chat = chatfile.read()
-            if not userip in usernamefile.read():
+            if not userip in nicknamefile.read():
                 asign_username(userip, '')
             return render_template('chatroom.html')  + chat
         except:
-            if not userip in usernamefile.read():
+            if not userip in nicknamefile.read():
                 asign_username(userip, '')
             return render_template('404.html')
     else:

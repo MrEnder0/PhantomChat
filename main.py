@@ -66,11 +66,11 @@ def chat(chatid):
             chatfile = open(f'chats/{chatid}.txt', 'r')
             chat = chatfile.read()
             if not userip in nicknamefile.read():
-                asign_nickname(userip, '')
+                asign_nickname(userip)
             return render_template('chatroom.html')  + chat
         except:
             if not userip in nicknamefile.read():
-                asign_nickname(userip, '')
+                asign_nickname(userip)
             return render_template('404.html')
     else:
         generate_captcha()

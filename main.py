@@ -17,9 +17,10 @@ def generate_captcha():
 
 def asign_username(ip, username):
     usernamefile = open('usernames.txt', 'a')
-    if "|" or "=" in username:
+    if "|" or "=" or "." in username:
         username = username.replace("|", "")
         username = username.replace("=", "")
+        username = username.replace(".", "")
 
     if username == '':
         NewUsername = "Ghost " + ''.join(random.choices(string.digits, k=6))

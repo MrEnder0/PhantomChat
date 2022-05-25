@@ -16,7 +16,7 @@ def generate_captcha():
     image.write(captcha_text, 'static/CAPTCHA.png')
 
 def asign_username(ip, username):
-    usernamefile = open('usernames.txt', 'a')
+    nicknamesfile = open('nicknames.txt', 'a')
     if "|" or "=" or "." in username:
         username = username.replace("|", "")
         username = username.replace("=", "")
@@ -24,9 +24,9 @@ def asign_username(ip, username):
 
     if username == '':
         NewUsername = "Ghost " + ''.join(random.choices(string.digits, k=6))
-        usernamefile.write(f'{ip}={NewUsername}|')
+        nicknamesfile.write(f'{ip}={NewUsername}|')
     else:
-        usernamefile.write(f'{ip}={username}|')
+        nicknamesfile.write(f'{ip}={username}|')
 
 @app.route('/')
 def main_page():

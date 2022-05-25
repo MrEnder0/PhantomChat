@@ -105,7 +105,7 @@ def chat_post(chatid):
             if chatroom_message == 'clearchat':
                 chatfile.close()
                 chatfile = open(f'chats/{chatid}.txt', 'w')
-                chatfile.write('Command: Chat has been cleared.<br>\n')
+                chatfile.write('*[Command] Chat has been cleared.<br>\n')
                 chatfile.close()
 
             if chatroom_message == 'delchat':
@@ -119,7 +119,7 @@ def chat_post(chatid):
             if chatroom_message == 'uptime':
                 chatfile.close()
                 chatfile = open(f'chats/{chatid}.txt', 'a')
-                chatfile.write('Command: Uptime in mins '+str(round(time.time()-start_time)/60)+"<br>\n")
+                chatfile.write('*[Command] Uptime in mins '+str(round(time.time()-start_time)/60)+"<br>\n")
                 chatfile.close()
 
             if chatroom_message.startswith('image'):
@@ -130,7 +130,7 @@ def chat_post(chatid):
                 chatfile.close()
 
             if chatroom_message == 'credit':
-                chatfile.write("Command: All code is written by MrEnder0001<br>\n")
+                chatfile.write("*[Command] All code is written by MrEnder0001<br>\n")
                 chatfile.close()
             
             if chatroom_message == 'exit':
@@ -142,7 +142,7 @@ def chat_post(chatid):
                 captchaRequire.close()
         else:
             chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write(f'[{get_username(userip)}]: {chatroom_message}<br>\n')
+            chatfile.write(f'[{get_username(userip)}] {chatroom_message}<br>\n')
             chatfile.close()
             if random.randint(0,10) < 2:
                 captchaRequire = open('captcha_require.txt', 'a')

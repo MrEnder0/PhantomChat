@@ -6,7 +6,7 @@ import random, string, time, os
 start_time = time.time()
 profanity.load_censor_words()
 letters = string.ascii_lowercase
-disallowedchars = [':', '"', '/', '\\', '.']
+disallowedchars = [':', '"', '/', '\\']
 app = Flask(__name__, static_folder="static")
 
 def generate_captcha():
@@ -15,18 +15,11 @@ def generate_captcha():
     captcha_text = ''.join(random.choice(letters) for i in range(5))
     image.write(captcha_text, 'static/CAPTCHA.png')
 
-def asign_username(ip, username):
+def asign_nickname(ip):
     nicknamesfile = open('nicknames.txt', 'a')
-    if "|" or "=" or "." in username:
-        username = username.replace("|", "")
-        username = username.replace("=", "")
-        username = username.replace(".", "")
-
-    if username == '':
-        NewUsername = "Ghost " + ''.join(random.choices(string.digits, k=6))
-        nicknamesfile.write(f'{ip}={NewUsername}|')
-    else:
-        nicknamesfile.write(f'{ip}={username}|')
+    NewUsername = "Ghost " + ''.join(random.choices(string.digits, k=6))
+    nicknamesfile.write(f'{ip}={NewUsername}|')
+    nicknamesfile.close()
 
 def get_username(ip):
     nicknamesfile = open('nicknames.txt', 'r')
@@ -73,11 +66,11 @@ def chat(chatid):
             chatfile = open(f'chats/{chatid}.txt', 'r')
             chat = chatfile.read()
             if not userip in nicknamefile.read():
-                asign_username(userip, '')
+                asign_nickname(userip, '')
             return render_template('chatroom.html')  + chat
         except:
             if not userip in nicknamefile.read():
-                asign_username(userip, '')
+                asign_nickname(userip, '')
             return render_template('404.html')
     else:
         generate_captcha()
@@ -97,6 +90,11 @@ def chat_post(chatid):
         chatroom_message = chatroom_message.replace('\n', '<br>')
         chatroom_message = chatroom_message.replace('<script>', '')
         chatroom_message = chatroom_message.replace('</script>', '')
+
+        if random.randint(0,10) < 2:
+                captchaRequire = open('captcha_require.txt', 'a')
+                captchaRequire.write(userip+'|')
+                captchaRequire.close()
     
         if chatroom_message.startswith('!'):
             chatfile = open(f'chats/{chatid}.txt', 'a')
@@ -136,18 +134,17 @@ def chat_post(chatid):
             if chatroom_message == 'exit':
                 chatfile.close()
                 return redirect('/')
-            if random.randint(0,10) < 2:
+
+            if chatroom_message == 'test.forcecaptcha':
+                chatfile.close()
                 captchaRequire = open('captcha_require.txt', 'a')
                 captchaRequire.write(userip+'|')
                 captchaRequire.close()
+                return redirect('/chat/'+chatid)
         else:
             chatfile = open(f'chats/{chatid}.txt', 'a')
             chatfile.write(f'[{get_username(userip)}] {chatroom_message}<br>\n')
             chatfile.close()
-            if random.randint(0,10) < 2:
-                captchaRequire = open('captcha_require.txt', 'a')
-                captchaRequire.write(userip+'|')
-                captchaRequire.close()
     else:
         captcha_answer = request.form['captcha']
         if captcha_answer == captcha_text:

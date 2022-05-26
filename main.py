@@ -117,7 +117,7 @@ def chat_post(chatid):
             if chatroom_message == 'uptime':
                 chatfile.close()
                 chatfile = open(f'chats/{chatid}.txt', 'a')
-                chatfile.write('*[Command] Uptime in mins '+str(round(time.time()-start_time)/60)+"<br>\n")
+                chatfile.write('*[Command] Uptime in mins '+str(round((time.time()-start_time)/60, 2))+"<br>\n")
                 chatfile.close()
 
             if chatroom_message.startswith('image'):

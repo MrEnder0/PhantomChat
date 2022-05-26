@@ -1,7 +1,15 @@
-from flask import Flask, request, render_template, redirect, send_file
-from better_profanity import profanity
-from captcha.image import ImageCaptcha
 import random, string, time, os
+
+try:
+    from flask import Flask, request, render_template, redirect, send_file
+    from better_profanity import profanity
+    from captcha.image import ImageCaptcha
+except ImportError:
+    print("[!] Error: Missing dependencies...\n[#] Installing dependencies...")
+    os.system('dependencies.bat')
+    print("[#] Dependencies installed! restarting...")
+    os.startfile(__file__)
+    exit()
 
 start_time = time.time()
 profanity.load_censor_words()

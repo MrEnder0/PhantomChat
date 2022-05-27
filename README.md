@@ -3,8 +3,6 @@ A messaging web app written in Flask.
 
 # Plans
 
-*add css to the chats
-
 *more commands
 
 *admin system

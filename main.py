@@ -99,7 +99,6 @@ def chat_post(chatid):
         chatroom_message = chatroom_message.replace('\n', '<br>')
         chatroom_message = chatroom_message.replace('<script>', '')
         chatroom_message = chatroom_message.replace('</script>', '')
-        chatmessage_css = "<style>p    {color: red;}</style>"
 
         if random.randint(0,10) < 2:
                 captchaRequire = open('captcha_require.txt', 'a')

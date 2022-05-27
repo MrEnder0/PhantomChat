@@ -15,6 +15,7 @@ start_time = time.time()
 profanity.load_censor_words()
 letters = string.ascii_lowercase
 disallowedchars = [':', '"', '/', '\\']
+
 app = Flask(__name__, static_folder="static")
 
 def generate_captcha():
@@ -187,3 +188,4 @@ def page_not_found(error):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=False)
+    

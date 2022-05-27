@@ -99,6 +99,7 @@ def chat_post(chatid):
         chatroom_message = chatroom_message.replace('\n', '<br>')
         chatroom_message = chatroom_message.replace('<script>', '')
         chatroom_message = chatroom_message.replace('</script>', '')
+        chatmessage_css = "<style>p    {color: red;}</style>"
 
         if random.randint(0,10) < 2:
                 captchaRequire = open('captcha_require.txt', 'a')
@@ -112,7 +113,7 @@ def chat_post(chatid):
             if chatroom_message == 'clearchat':
                 chatfile.close()
                 chatfile = open(f'chats/{chatid}.txt', 'w')
-                chatfile.write('*[Command] Chat has been cleared.<br>\n')
+                chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] Chat has been cleared.</p>\n')
                 chatfile.close()
 
             if chatroom_message == 'delchat':
@@ -126,7 +127,7 @@ def chat_post(chatid):
             if chatroom_message == 'uptime':
                 chatfile.close()
                 chatfile = open(f'chats/{chatid}.txt', 'a')
-                chatfile.write('*[Command] Uptime in mins '+str(round((time.time()-start_time)/60, 2))+"<br>\n")
+                chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] Uptime in mins '+str(round((time.time()-start_time)/60, 2))+"</p>\n")
                 chatfile.close()
 
             if chatroom_message.startswith('image'):
@@ -137,7 +138,7 @@ def chat_post(chatid):
                 chatfile.close()
 
             if chatroom_message == 'credit':
-                chatfile.write("*[Command] All code is written by MrEnder0001<br>\n")
+                chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] All code is written by MrEnder0001</p>\n')
                 chatfile.close()
             
             if chatroom_message == 'exit':
@@ -152,7 +153,7 @@ def chat_post(chatid):
                 return redirect('/chat/'+chatid)
         else:
             chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write(f'[{get_username(userip)}] {chatroom_message}<br>\n')
+            chatfile.write(f'<p style="font-size: 32px;font-family: KoHo;">[{get_username(userip)}] {chatroom_message}</p>\n')
             chatfile.close()
     else:
         captcha_answer = request.form['captcha']

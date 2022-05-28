@@ -6,9 +6,11 @@ try:
     from captcha.image import ImageCaptcha
 except ImportError:
     print("[!] Error: Missing dependencies...\n[#] Installing dependencies...")
-    os.system('dependencies.bat')
-    print("[#] Dependencies installed! restarting...")
-    os.startfile(__file__)
+    try:
+        os.system('dependencies.bat')
+    except:
+        os.system('python3 pip install flask better_profanity captcha')
+    print("[#] Dependencies installed reopen the server.")
     exit()
 
 start_time = time.time()

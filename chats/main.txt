@@ -1,2 +1,3 @@
-Welcome to Phantom Chat<br>
-Try commands like !clearchat !delchat !uptime !image {image url} !credit or !exit
+<p style="font-size: 32px;font-family: KoHo;">Welcome to Phantom Chat</p>
+<p style="font-size: 32px;font-family: KoHo;">Try commands like !clearchat !delchat !uptime !image {image url} !credit or !exit</p>
+<p style="font-size: 32px;font-family: KoHo;">You can even stylize you text <strong>like this</strong> with html tags (some tags are restricted)</p>

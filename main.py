@@ -12,7 +12,7 @@ except ImportError:
         os.system('python3 pip install flask better_profanity captcha')
     print("[#] Dependencies installed reopen the server.")
     exit()
-
+    
 start_time = time.time()
 profanity.load_censor_words()
 letters = string.ascii_lowercase
@@ -101,6 +101,8 @@ def chat_post(chatid):
         chatroom_message = chatroom_message.replace('\n', '<br>')
         chatroom_message = chatroom_message.replace('<script>', '')
         chatroom_message = chatroom_message.replace('</script>', '')
+        chatroom_message = chatroom_message.replace('<script src', '')
+        chatroom_message = chatroom_message.replace('<script type="text/javascript" src', '')
 
         if random.randint(0,10) < 2:
                 captchaRequire = open('captcha_require.txt', 'a')

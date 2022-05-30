@@ -1,3 +1,4 @@
 <p style="font-size: 32px;font-family: KoHo;">Welcome to Phantom Chat</p>
-<p style="font-size: 32px;font-family: KoHo;">You can use commands like !clearchat !delchat !uptime !image {image url} !credit or !exit</p>
+<p style="font-size: 32px;font-family: KoHo;">You can use commands like !uptime, !image {image url}, !credit, or !exit</p>
+<p style="font-size: 32px;font-family: KoHo;">If your a admin you can even do moderation commands like !admin.clearchat, !admin.delchat, or !admin.announce {message}</p>
 <p style="font-size: 32px;font-family: KoHo;">You can even stylize you text <strong>like this</strong> with html tags (some tags are restricted)</p>

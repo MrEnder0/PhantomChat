@@ -136,7 +136,7 @@ def chat_post(chatid):
 
             if chatroom_message.startswith('admin.'):
                 if userip == '127.0.0.1':
-                    if chatroom_message == 'admin.clear':
+                    if chatroom_message == 'admin.clearchat':
                         chatfile.close()
                         chatfile = open(f'chats/{chatid}.txt', 'w')
                         chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] Chat has been cleared.</p>\n')

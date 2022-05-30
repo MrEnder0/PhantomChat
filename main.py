@@ -113,20 +113,6 @@ def chat_post(chatid):
             chatfile = open(f'chats/{chatid}.txt', 'a')
             chatroom_message = chatroom_message[1:]
 
-            if chatroom_message == 'clearchat':
-                chatfile.close()
-                chatfile = open(f'chats/{chatid}.txt', 'w')
-                chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] Chat has been cleared.</p>\n')
-                chatfile.close()
-
-            if chatroom_message == 'delchat':
-                if chatid != "main":
-                    chatfile.close()
-                    os.remove(f'chats/{chatid}.txt')
-                    return redirect('/')
-                else:
-                    pass
-
             if chatroom_message == 'uptime':
                 chatfile.close()
                 chatfile = open(f'chats/{chatid}.txt', 'a')
@@ -147,6 +133,26 @@ def chat_post(chatid):
             if chatroom_message == 'exit':
                 chatfile.close()
                 return redirect('/')
+
+            if chatroom_message.startswith('admin.'):
+                if userip == '127.0.0.1':
+                    if chatroom_message == 'admin.clear':
+                        chatfile.close()
+                        chatfile = open(f'chats/{chatid}.txt', 'w')
+                        chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] Chat has been cleared.</p>\n')
+                        chatfile.close()
+                    if chatroom_message == 'admin.delchat':
+                        chatfile.close()
+                        os.remove(f'chats/{chatid}.txt')
+                        return redirect('/')
+                    if chatroom_message.startswith('admin.announce'):
+                        chatfile.close()
+                        message = chatroom_message[14:]
+                        for chat in os.listdir('chats'):
+                            chatfile = open(f'chats/{chat}', 'a')
+                            chatfile.write(f'<strong><p style="font-size: 32px;font-family: KoHo;">*[Anouncement] {message}</p></strong>\n')
+                            print("[Anouncement] " + message)
+                            chatfile.close()
 
             if chatroom_message == 'test.forcecaptcha':
                 chatfile.close()

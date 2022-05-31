@@ -3,8 +3,6 @@ A messaging web app written in Flask.
 
 # Plans
 
-*more commands (working on)
+*add admin command
 
-*admin system (working on)
-
-*gartic phone implimintation (working on)
+*store stuff in db instead of txt

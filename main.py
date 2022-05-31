@@ -32,7 +32,7 @@ def asign_nickname(ip):
     nicknamesfile.write(f'{ip}={NewUsername}|')
     nicknamesfile.close()
 
-def get_username(ip):
+def get_nickname(ip):
     nicknamesfile = open('nicknames.txt', 'r')
     nicknames = nicknamesfile.read().split('|')
     for nickname in nicknames:
@@ -125,6 +125,13 @@ def chat_post(chatid):
                 chatfile = open(f'chats/{chatid}.txt', 'a')
                 chatfile.write("<img src='"+chatroom_message+"' style='width:300px;height:250px'>"+"<br>\n")
                 chatfile.close()
+            
+            if chatroom_message.startswith('garticphone'):
+                chatroom_message = chatroom_message[12:]
+                chatfile.close()
+                if chatroom_message.startswith('https://garticphone.com/'):
+                    chatfile = open(f'chats/{chatid}.txt', 'a')
+                    chatfile.write(f'<div style="background-color: whitesmoke;width: 520px;border: 7px solid black;padding: 5px;margin: 20px;border-radius: 25px;line-height: 80%;font-family: KoHo;"><h1 style="vertical-align: super;vertical-align: text-top;vertical-align: top;"><strong>GarticPhone Party</strong></h1><button onclick="location.href = \'{chatroom_message}\'" class="gatricphone_join" style="background-color: black;border: none;color: white;padding: 18px 187px;text-align: center;font-size: 24px;margin: 4px 2px;border-radius: 25px;opacity: 0.8;"><h3>Join Party</h3></button></div>')
 
             if chatroom_message == 'credit':
                 chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] All code is written by MrEnder0001</p>\n')
@@ -162,7 +169,7 @@ def chat_post(chatid):
                 return redirect('/chat/'+chatid)
         else:
             chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write(f'<p style="font-size: 32px;font-family: KoHo;">[{get_username(userip)}] {chatroom_message}</p>\n')
+            chatfile.write(f'<p style="font-size: 32px;font-family: KoHo;">[{get_nickname(userip)}] {chatroom_message}</p>\n')
             chatfile.close()
     else:
         captcha_answer = request.form['captcha']

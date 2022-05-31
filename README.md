@@ -6,3 +6,5 @@ A messaging web app written in Flask.
 *more commands (working on)
 
 *admin system (working on)
+
+*gartic phone implimintation (working on)

@@ -131,7 +131,7 @@ def chat_post(chatid):
                 chatfile.close()
                 if chatroom_message.startswith('https://garticphone.com/'):
                     chatfile = open(f'chats/{chatid}.txt', 'a')
-                    chatfile.write(f'<div style="background-color: whitesmoke;width: 520px;border: 7px solid black;padding: 5px;margin: 20px;border-radius: 25px;line-height: 450%;font-family: KoHo;"><h1 style="vertical-align: super;vertical-align: text-top;vertical-align: top;text-align: center;"><strong>GarticPhone Party</strong></h1><button onclick="location.href = \'{chatroom_message}\'" class="gatricphone_join" style="background-color: black;border: none;color: white;padding: 18px 200px;text-align: center;font-size: 24px;margin: 4px 2px;border-radius: 25px;opacity: 0.8;text-align: center;"><h3>Join Party</h3></button></div>')
+                    chatfile.write(f'<div style="background-color: whitesmoke;width: 550px;border: 7px solid black;padding: 5px;margin: 20px;border-radius: 25px;line-height: 450%;font-family: KoHo;"><h1 style="vertical-align: super;vertical-align: text-top;vertical-align: top;text-align: center;"><strong>GarticPhone Party</strong></h1><button onclick="location.href = \'{chatroom_message}\'" class="gatricphone_join" style="background-color: black;border: none;color: white;padding: 18px 200px;text-align: center;font-size: 24px;margin: 4px 2px;border-radius: 25px;opacity: 0.8;text-align: center;"><h3>Join Party</h3></button></div>')
 
             if chatroom_message == 'credit':
                 chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] All code is written by MrEnder0001</p>\n')

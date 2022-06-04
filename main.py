@@ -31,11 +31,11 @@ def generate_captcha():
 
 def new_user(ip):
     nickname = "Ghost " + ''.join(random.choices(string.digits, k=6))
-    cursor.execute("INSERT INTO users(username, userip, captcha, admin) VALUES(?, ?, ?, ?)", (nickname, ip, False, False))
+    cursor.execute("INSERT INTO 'users'(username, userip, captcha, admin) VALUES(?, ?, ?, ?)", (nickname, ip, False, False))
     connection.commit()
 
 def get_nickname(ip):
-    cursor.execute("SELECT username FROM users WHERE userip = ?", (ip,))
+    cursor.execute("SELECT username FROM 'users' WHERE userip = ?", (ip,))
     nickname = cursor.fetchone()
     return nickname[1]
 
@@ -62,7 +62,6 @@ def chat_page_post():
         chat_file.close()
         return redirect(f'/chat/{chat_name}')
 
-#TODO fix this page to route to 404 correctly and check if user exists
 @app.route('/chat/<chatid>')
 def chat(chatid):
     for word in disallowedchars:
@@ -70,7 +69,7 @@ def chat(chatid):
             return redirect('/chat/' + chatid)
 
     userip = request.remote_addr
-    cursor.execute("Select * FROM users WHERE userip=?", (userip,))
+    cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
     userInfo = cursor.fetchone()
 
     if len(userInfo)==0:
@@ -103,7 +102,7 @@ def chat_post(chatid):
             return redirect('/chat/' + chatid)
 
     userip = request.remote_addr
-    cursor.execute("Select * FROM users WHERE userip=?", (userip,))
+    cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
     userInfo = cursor.fetchone()
     captcha = userInfo[3]
 
@@ -117,7 +116,7 @@ def chat_post(chatid):
         chatroom_message = chatroom_message.replace('<script type="text/javascript" src', '')
 
         if random.randint(0,10) < 2:
-                cursor.execute("UPDATE users SET captcha = ? WHERE userip = ?", (True, userip))
+                cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (True, userip))
                 connection.commit()
     
         if chatroom_message.startswith('!'):
@@ -150,7 +149,7 @@ def chat_post(chatid):
 
             if chatroom_message.startswith('nickname'):
                 nickname = chatroom_message[9:]
-                cursor.execute("UPDATE users SET username = ? WHERE userip = ?", (nickname, userip))
+                cursor.execute("UPDATE 'users' SET username = ? WHERE userip = ?", (nickname, userip))
                 connection.commit()
             
             if chatroom_message == 'exit':
@@ -158,7 +157,7 @@ def chat_post(chatid):
                 return redirect('/')
 
             if chatroom_message.startswith('admin.'):
-                cursor.execute("Select * FROM users WHERE userip=?", (userip,))
+                cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
                 userInfo = cursor.fetchone()
                 isadmin = userInfo[4]
                 if isadmin:
@@ -181,11 +180,11 @@ def chat_post(chatid):
 
             if chatroom_message == 'test.forcecaptcha':
                 chatfile.close()
-                cursor.execute("UPDATE users SET captcha = ? WHERE userip = ?", (True, userip))
+                cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (True, userip))
                 connection.commit()
                 return redirect('/chat/'+chatid)
         else:
-            cursor.execute("Select * FROM users WHERE userip=?", (userip,))
+            cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
             userInfo = cursor.fetchone()
             username = userInfo[1]
             chatfile = open(f'chats/{chatid}.txt', 'a')
@@ -194,7 +193,7 @@ def chat_post(chatid):
     else:
         captcha_answer = request.form['captcha']
         if captcha_answer == captcha_text:
-            cursor.execute("UPDATE users SET captcha = ? WHERE userip = ?", (False, userip))
+            cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (False, userip))
             connection.commit()
         else:
             return redirect(f'/chat/{chatid}')

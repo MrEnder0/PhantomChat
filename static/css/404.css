@@ -1,10 +1,10 @@
 @font-face {
     font-family: Plastic;
-    src: url("Plastic.ttf");
+    src: url("plastic.woff");
 }
 @font-face {
     font-family: KoHo;
-    src: url("KoHo.ttf");
+    src: url("koho.woff");
 }
 
 body {

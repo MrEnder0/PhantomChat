@@ -76,6 +76,8 @@ def chat(chatid):
         if not len(userInfo)==0:pass
     except:
         new_user(userip)
+        chatfile = open(f'chats/{chatid}.txt', 'r')
+        chat = chatfile.read()
         return render_template('chatroom.html')  + chat
 
     captcha = userInfo[3]

@@ -73,10 +73,10 @@ def chat(chatid):
     userInfo = cursor.fetchone()
 
     try:
-        if not len(userInfo)==0:
-            newUser = False
+        if not len(userInfo)==0:pass
     except:
-        newUser = True
+        new_user(userip)
+        return render_template('chatroom.html')  + chat
 
     captcha = userInfo[3]
 
@@ -84,13 +84,8 @@ def chat(chatid):
         try:
             chatfile = open(f'chats/{chatid}.txt', 'r')
             chat = chatfile.read()
-
-            if newUser:
-                new_user(userip)
             return render_template('chatroom.html')  + chat
         except:
-            if newUser:
-                new_user(userip)
             return render_template('404.html')
     else:
         generate_captcha()

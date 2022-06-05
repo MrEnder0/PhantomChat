@@ -16,7 +16,7 @@ except ImportError:
 start_time = time.time()
 profanity.load_censor_words()
 letters = string.ascii_lowercase
-disallowedchars = [':', '"', '/', '\\']
+disallowedchars = [':', '"', '/', '\\', '.']
 
 connection = sqlite3.connect('data.db', check_same_thread=False)
 cursor = connection.cursor()

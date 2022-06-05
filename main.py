@@ -1,4 +1,4 @@
-import random, string, time, os
+import sqlite3, random, string, time, os
 
 try:
     from flask import Flask, request, render_template, redirect, send_file
@@ -18,6 +18,9 @@ profanity.load_censor_words()
 letters = string.ascii_lowercase
 disallowedchars = [':', '"', '/', '\\']
 
+connection = sqlite3.connect('data.db', check_same_thread=False)
+cursor = connection.cursor()
+
 app = Flask(__name__, static_folder="static")
 
 def generate_captcha():
@@ -26,18 +29,15 @@ def generate_captcha():
     captcha_text = ''.join(random.choice(letters) for i in range(5))
     image.write(captcha_text, 'static/CAPTCHA.png')
 
-def asign_nickname(ip):
-    nicknamesfile = open('nicknames.txt', 'a')
-    NewUsername = "Ghost " + ''.join(random.choices(string.digits, k=6))
-    nicknamesfile.write(f'{ip}={NewUsername}|')
-    nicknamesfile.close()
+def new_user(ip):
+    nickname = "Ghost " + ''.join(random.choices(string.digits, k=6))
+    cursor.execute("INSERT INTO 'users'(username, userip, captcha, admin) VALUES(?, ?, ?, ?)", (nickname, ip, False, False))
+    connection.commit()
 
 def get_nickname(ip):
-    nicknamesfile = open('nicknames.txt', 'r')
-    nicknames = nicknamesfile.read().split('|')
-    for nickname in nicknames:
-        if nickname.startswith(ip):
-            return nickname.split('=')[1]
+    cursor.execute("SELECT username FROM 'users' WHERE userip = ?", (ip,))
+    nickname = cursor.fetchone()
+    return nickname[1]
 
 @app.route('/')
 def main_page():
@@ -69,19 +69,25 @@ def chat(chatid):
             return redirect('/chat/' + chatid)
 
     userip = request.remote_addr
-    captchaRequire = open('captcha_require.txt', 'r')
-    nicknamefile = open('nicknames.txt', 'r')
+    cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
+    userInfo = cursor.fetchone()
 
-    if not userip in captchaRequire.read():
+    try:
+        if not len(userInfo)==0:pass
+    except:
+        new_user(userip)
+        chatfile = open(f'chats/{chatid}.txt', 'r')
+        chat = chatfile.read()
+        return render_template('chatroom.html')  + chat
+
+    captcha = userInfo[3]
+
+    if not captcha:
         try:
             chatfile = open(f'chats/{chatid}.txt', 'r')
             chat = chatfile.read()
-            if not userip in nicknamefile.read():
-                asign_nickname(userip)
             return render_template('chatroom.html')  + chat
         except:
-            if not userip in nicknamefile.read():
-                asign_nickname(userip)
             return render_template('404.html')
     else:
         generate_captcha()
@@ -92,10 +98,13 @@ def chat_post(chatid):
     for word in disallowedchars:
         if word in chatid:
             return redirect('/chat/' + chatid)
-    userip = request.remote_addr
-    captchaRequire = open('captcha_require.txt', 'r')
 
-    if not userip in captchaRequire.read():
+    userip = request.remote_addr
+    cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
+    userInfo = cursor.fetchone()
+    captcha = userInfo[3]
+
+    if not captcha:
         chatroom_message = request.form['text']
         chatroom_message = profanity.censor(chatroom_message)
         chatroom_message = chatroom_message.replace('\n', '<br>')
@@ -105,9 +114,8 @@ def chat_post(chatid):
         chatroom_message = chatroom_message.replace('<script type="text/javascript" src', '')
 
         if random.randint(0,10) < 2:
-                captchaRequire = open('captcha_require.txt', 'a')
-                captchaRequire.write(userip+'|')
-                captchaRequire.close()
+                cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (True, userip))
+                connection.commit()
     
         if chatroom_message.startswith('!'):
             chatfile = open(f'chats/{chatid}.txt', 'a')
@@ -136,13 +144,21 @@ def chat_post(chatid):
             if chatroom_message == 'credit':
                 chatfile.write('<p style="font-size: 32px;font-family: KoHo;">*[Command] All code is written by MrEnder0001</p>\n')
                 chatfile.close()
+
+            if chatroom_message.startswith('nickname'):
+                nickname = chatroom_message[9:]
+                cursor.execute("UPDATE 'users' SET username = ? WHERE userip = ?", (nickname, userip))
+                connection.commit()
             
             if chatroom_message == 'exit':
                 chatfile.close()
                 return redirect('/')
 
             if chatroom_message.startswith('admin.'):
-                if userip == '127.0.0.1':
+                cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
+                userInfo = cursor.fetchone()
+                isadmin = userInfo[4]
+                if isadmin:
                     if chatroom_message == 'admin.clearchat':
                         chatfile.close()
                         chatfile = open(f'chats/{chatid}.txt', 'w')
@@ -162,23 +178,21 @@ def chat_post(chatid):
 
             if chatroom_message == 'test.forcecaptcha':
                 chatfile.close()
-                captchaRequire = open('captcha_require.txt', 'a')
-                captchaRequire.write(userip+'|')
-                captchaRequire.close()
+                cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (True, userip))
+                connection.commit()
                 return redirect('/chat/'+chatid)
         else:
+            cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
+            userInfo = cursor.fetchone()
+            username = userInfo[1]
             chatfile = open(f'chats/{chatid}.txt', 'a')
-            chatfile.write(f'<p style="font-size: 32px;font-family: KoHo;">[{get_nickname(userip)}] {chatroom_message}</p>\n')
+            chatfile.write(f'<p style="font-size: 32px;font-family: KoHo;">[{username}] {chatroom_message}</p>\n')
             chatfile.close()
     else:
         captcha_answer = request.form['captcha']
         if captcha_answer == captcha_text:
-            captchaRequire = open('captcha_require.txt', 'r')
-            required_captcha = captchaRequire.read()
-            captchaRequire.close()
-            captchaRequire = open('captcha_require.txt', 'w')
-            captchaRequire.write(required_captcha.replace(userip+"|", ''))
-            captchaRequire.close()
+            cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (False, userip))
+            connection.commit()
         else:
             return redirect(f'/chat/{chatid}')
 

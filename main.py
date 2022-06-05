@@ -72,10 +72,11 @@ def chat(chatid):
     cursor.execute("Select * FROM 'users' WHERE userip=?", (userip,))
     userInfo = cursor.fetchone()
 
-    if len(userInfo)==0:
+    try:
+        if not len(userInfo)==0:
+            newUser = False
+    except:
         newUser = True
-    else:
-        newUser = False
 
     captcha = userInfo[3]
 

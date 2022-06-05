@@ -3,6 +3,6 @@ A messaging web app written in Flask.
 
 # Plans
 
-*use sqlite3 instead of txt storage (working on)
+*more moderation commands
 
-*add admin command
+*fix isues with dynamic ip

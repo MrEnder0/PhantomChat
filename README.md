@@ -5,4 +5,7 @@ A messaging web app written in Flask.
 
 *more moderation commands
 
-*fix isues with dynamic ip
+*admin only chat
+
+*make way better way of logging in other then ip based accounts
+

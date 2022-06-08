@@ -17,11 +17,18 @@ A messaging web app written in Flask
 *GarticPhone party system
 
 # Plans
-*have code generate a db by itself so the db works on any hosting device
+*Have code generate a db by itself so the db works on any hosting device
 
-*more moderation commands
+*More moderation commands
 
-*admin only chat
+*Admin only chat
 
-*make way better way of logging in other then ip based accounts
+*Make way better way of logging in other then ip based accounts
+
+*Add login and sign up page
+
+*Use cookies to stay logged in 
+
+*Completly remake the css and make site look good
+
 

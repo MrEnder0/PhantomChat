@@ -17,13 +17,9 @@ A messaging web app written in Flask
 *GarticPhone party system
 
 # Plans
-*Have code generate a db by itself so the db works on any hosting device
-
 *More moderation commands
 
 *Admin only chat
-
-*Make way better way of logging in other then ip based accounts
 
 *Add login and sign up page
 
@@ -31,4 +27,7 @@ A messaging web app written in Flask
 
 *Completly remake the css and make site look good
 
+# Known bugs/issues
+*When using db sent with code it breaks, will have code generate db instead of sending empty db with it
 
+*Current accounts are ip based and not password to login, will change to be password based

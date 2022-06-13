@@ -28,6 +28,8 @@ A messaging web app written in Flask
 *Completly remake the css and make site look good
 
 # Known bugs/issues
+*There is many things that are still unsecure with the html formating for messages
+
 *When using db sent with code it breaks, will have code generate db instead of sending empty db with it
 
 *Current accounts are ip based and not password to login, will change to be password based

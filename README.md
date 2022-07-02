@@ -1,6 +1,9 @@
 # PhantomChat
 A messaging web app written in Flask
 
+# Warning
+This has many unsafe things about it, I have tried fixing them but became very uninspired because every way I tried did not fully stop it or even work so I dont recommend actually using this.
+
 # Features 
 *Account system
 

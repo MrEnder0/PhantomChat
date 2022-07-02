@@ -112,6 +112,11 @@ def chat_post(chatid):
         chatroom_message = chatroom_message.replace('</script>', '')
         chatroom_message = chatroom_message.replace('<script src', '')
         chatroom_message = chatroom_message.replace('<script type="text/javascript" src', '')
+        chatroom_message = chatroom_message.replace('javascript="', '')
+        chatroom_message = chatroom_message.replace('<iframe>', '')
+        chatroom_message = chatroom_message.replace('</iframe>', '')
+        chatroom_message = chatroom_message.replace('<portal>', '')
+        chatroom_message = chatroom_message.replace('</portal>', '')
 
         if random.randint(0,10) < 2:
                 cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (True, userip))

@@ -14,7 +14,7 @@ while True:
         details = "Hosting a hub",
         state = f'Cpu ussage: {str(psutil.cpu_percent())}%',
         start = start,
-        buttons = [{"label": "Check out the project", "url": "https://github.com/MrEnder0/PhantomChat"}]
+        buttons = [{"label": "Check out this project", "url": "https://github.com/MrEnder0/PhantomChat"}]
     )
     print(f'[#] Updated with {psutil.cpu_percent()}% cpu usage')
     time.sleep(15)

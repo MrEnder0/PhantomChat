@@ -19,17 +19,6 @@ This has many unsafe things about it, I have tried fixing them but became very u
 
 *GarticPhone party system
 
-# Plans
-*More moderation commands
-
-*Admin only chat
-
-*Add login and sign up page
-
-*Use cookies to stay logged in 
-
-*Completly remake the css and make site look good
-
 # Known bugs/issues
 *There is many things that are still unsecure with the html formating for messages
 

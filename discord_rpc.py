@@ -17,4 +17,4 @@ while True:
         buttons = [{"label": "Check out this project", "url": "https://github.com/MrEnder0/PhantomChat"}]
     )
     print(f'[#] Updated with {psutil.cpu_percent()}% cpu usage')
-    time.sleep(15)
+    time.sleep(12)

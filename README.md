@@ -4,7 +4,7 @@ A messaging web app written in Flask
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/MrEnder0/PhantomChat)
 
 # Warning
-This has many unsafe things about it, I have tried fixing them but became very uninspired because every way I tried did not fully stop it or even work so I dont recommend actually using this.
+This has many security issues, I have tried fixing them but became very uninspired because every way I tried did not fully stop it or even work so I dont recommend actually using this, unless you are using it on localhost.
 
 # Features 
  * Account system
@@ -17,5 +17,3 @@ This has many unsafe things about it, I have tried fixing them but became very u
 
 # Known bugs/issues
  * There is many things that are still unsecure with the html formating for messages
- * When using db sent with code it breaks, will have code generate db instead of sending empty db with it
- * Current accounts are ip based and not password to login, will change to be password based

@@ -3,6 +3,11 @@ image: gitpod/workspace-full
 tasks:
   - before: sudo -H pip3 install flask better_profanity captcha
     command: python3 main.py
+    
 ports:
   - port: 80
     onOpen: notify
+
+vscode:
+  extensions:
+    - ms-python.python

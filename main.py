@@ -12,6 +12,7 @@ except ImportError:
     exit()
     
 start_time = time.time()
+sanitizer = Sanitizer()
 profanity.load_censor_words()
 letters = string.ascii_lowercase
 disallowedchars = [':', '"', '/', '\\', '.']
@@ -71,20 +72,17 @@ def chat(chatid):
     userInfo = cursor.fetchone()
 
     try:
-        if not len(userInfo)==0:pass
+        if not len(userInfo)==0:
+            pass
     except:
         new_user(userip)
-        chatfile = open(f'chats/{chatid}.txt', 'r')
-        chat = chatfile.read()
-        return render_template('chatroom.html')  + chat
+        return render_template('chatroom.html') + open(f'chats/{chatid}.txt', 'r').read()
 
     captcha = userInfo[3]
 
     if not captcha:
         try:
-            chatfile = open(f'chats/{chatid}.txt', 'r')
-            chat = chatfile.read()
-            return render_template('chatroom.html')  + chat
+            return render_template('chatroom.html') + open(f'chats/{chatid}.txt', 'r').read()
         except:
             return render_template('404.html')
     else:
@@ -105,6 +103,8 @@ def chat_post(chatid):
     if not captcha:
         chatroom_message = request.form['text']
         chatroom_message = profanity.censor(chatroom_message)
+        chatroom_message = sanitizer.sanitize(chatroom_message)
+        """ Deprecated message sanitizer
         chatroom_message = chatroom_message.replace('\n', '<br>')
         chatroom_message = chatroom_message.replace('<script>', '')
         chatroom_message = chatroom_message.replace('</script>', '')
@@ -115,10 +115,11 @@ def chat_post(chatid):
         chatroom_message = chatroom_message.replace('</iframe>', '')
         chatroom_message = chatroom_message.replace('<portal>', '')
         chatroom_message = chatroom_message.replace('</portal>', '')
+        """
 
         if random.randint(0,10) < 2:
-                cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (True, userip))
-                connection.commit()
+            cursor.execute("UPDATE 'users' SET captcha = ? WHERE userip = ?", (True, userip))
+            connection.commit()
     
         if chatroom_message.startswith('!'):
             chatfile = open(f'chats/{chatid}.txt', 'a')
@@ -221,4 +222,3 @@ def page_not_found(error):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=False)
-    

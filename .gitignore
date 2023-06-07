@@ -129,5 +129,6 @@ dmypy.json
 .pyre/
 
 # Server Data
+CAPTCHA.png
 chats/*
-*.db
+data.db

@@ -4,9 +4,10 @@ try:
     from flask import Flask, request, render_template, redirect, send_file
     from better_profanity import profanity
     from captcha.image import ImageCaptcha
+    from html_sanitizer import Sanitizer
 except ImportError:
     print("[!] Error: Missing dependencies...\n[#] Installing dependencies...")
-    os.system('python3 pip install flask better_profanity captcha')
+    os.system('pip install flask better_profanity captcha html-sanitizer')
     print("[#] Dependencies installed, to apply reopen the server.")
     exit()
     
